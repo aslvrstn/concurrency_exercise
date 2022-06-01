@@ -1,5 +1,6 @@
 import hashlib
 import time
+from concurrent.futures import ThreadPoolExecutor
 from random import randbytes
 from typing import Optional, List
 
@@ -43,9 +44,14 @@ def mine_multiple(successes_desired: int, target_len: int) -> List[bytes]:
     :param target_len: aka difficulty. How many zeroes does a success need to end with?
     :return: a list of length `successes_desired` successful strings
     """
-    successes: List[bytes] = []
-    while len(successes) < successes_desired:
-        res = mine(target_len=target_len)
+    tpe = ThreadPoolExecutor()
+    miners = []
+    for i in range(successes_desired):
+        miners.append(tpe.submit(mine, target_len))
+
+    successes = []
+    for miner in miners:
+        res = miner.result()
         if res is not None:
             successes.append(res)
 
