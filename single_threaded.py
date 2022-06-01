@@ -5,7 +5,7 @@ from typing import Optional, List
 
 
 def mine(target_len: int) -> Optional[bytes]:
-    max_attempts = 1000000
+    max_attempts = 100000
     success = "0" * target_len
     attempts = 0
     while attempts < max_attempts:
@@ -48,3 +48,6 @@ if __name__ == "__main__":
 
     end = time.time()
     print(f"Generated {len(successes)} hashes in {end-start}s")
+
+    if len(successes) < successes_desired:
+        raise AssertionError(f"Wanted {successes_desired} successes but only got {len(successes)}")
