@@ -1,0 +1,34 @@
+-------------
+test_pings.py
+-------------
+
+My solution::
+
+    def get_pings(urls: List[str]) -> Dict[str, int]:
+        with ThreadPoolExecutor() as tpe:
+            res = tpe.map(get_ping, urls)
+            return {url: ping for url, ping in zip(urls, res)}
+
+-------------
+mine.py
+-------------
+
+My solution::
+
+    def mine_multiple(successes_desired: int, target_len: int) -> List[bytes]:
+        successes = []
+        with ProcessPoolExecutor() as ppe:
+            miners = []
+
+            for i in range(successes_desired):
+                miners.append(ppe.submit(mine, target_len))
+
+            for miner in miners:
+                res = miner.result()
+                if res is not None:
+                    successes.append(res)
+                else:
+                    # This miner failed to find one! Try again
+                    miners.append(ppe.submit(mine, target_len))
+
+        return successes
