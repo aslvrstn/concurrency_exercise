@@ -5,10 +5,12 @@ import requests
 
 
 def get_ping(url: str) -> int:
+    """Return the number of milliseconds it takes to load `url`"""
     return int(requests.get(url).elapsed.microseconds / 1000)
 
 
 def get_pings(urls: List[str]) -> Dict[str, int]:
+    """Return a map from url to its ping"""
     return {url: get_ping(url) for url in urls}
 
 
