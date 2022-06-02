@@ -9,6 +9,19 @@ My solution::
             res = tpe.map(get_ping, urls)
             return {url: ping for url, ping in zip(urls, res)}
 
+Using gevent::
+
+    # This is kind of a magic incantation that must run before any other imports
+    from gevent import monkey; monkey.patch_all()
+    from gevent import Greenlet
+
+    def get_pings(urls: List[str]) -> Dict[str, int]:
+        glets = []
+        for url in urls:
+            glets.append(Greenlet.spawn(get_ping, url))
+
+        return {url: glet.get() for url, glet in zip(urls, glets)}
+
 -------------
 mine.py
 -------------
