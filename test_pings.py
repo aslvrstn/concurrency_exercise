@@ -1,4 +1,5 @@
 import time
+from concurrent.futures import ThreadPoolExecutor
 from typing import List, Dict
 
 import requests
@@ -9,7 +10,9 @@ def get_ping(url: str) -> int:
 
 
 def get_pings(urls: List[str]) -> Dict[str, int]:
-    return {url: get_ping(url) for url in urls}
+    with ThreadPoolExecutor() as tpe:
+        res = tpe.map(get_ping, urls)
+        return {url: ping for url, ping in zip(urls, res)}
 
 
 if __name__ == "__main__":
