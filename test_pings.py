@@ -17,6 +17,9 @@ if __name__ == "__main__":
         "https://google.com",
         "https://yahoo.com",
         "https://wikipedia.com",
+        "https://www.pythonlikeyoumeanit.com/",
+        "https://aslvrstn.com/",
+        "https://www.smithfieldfoods.com/",
         "https://www.t-sg.jp/en/",
     ]
     start = time.time()
